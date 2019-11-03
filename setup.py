@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='kor',
+    name='kor_project',
     version='0.0.1',
     description="Use this package to work with kor files",
     py_modules=["kor"],
