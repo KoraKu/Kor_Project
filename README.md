@@ -3,6 +3,9 @@
 # Kor Project
 This repository contains the files of the Kor project with all the doc that you need
 
+# Changelogs 
+- Added exemple.py
+
 ## The Kor Project Goals
 The kor project is desinged to store easlily data in file (.kor file) such as numbers, list, and many more ! You can define your own encoding method to encode your own object or varaible type.
 
