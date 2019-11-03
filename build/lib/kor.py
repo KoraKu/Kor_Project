@@ -1,6 +1,8 @@
 #coding: utf-8
 ### INFORMATION ### ------------------------------------------------------------
 """
+kor_project by KoraKu (AKA Hugo Costa)
+
 This module is for working with .kor files, here's the template for the file
 
          ________________________________________
@@ -24,7 +26,7 @@ As you can see the first to line are information about the file
 
 comments are marked by '#' on the very first char of the line
 
-to store number of string we use 'var' with the syntawe showed
+to store number of string we use 'var' with the syntax showed
 same for storing list, but with 'list' instead of 'var'
 
 how to use ?
@@ -103,7 +105,7 @@ class Kor:
         """
         returns the author of the file
         """
-        with open(self.file_path, "r") as file:
+        with open(self.file_path, "r", encoding='utf-8') as file:
             try:
                 author = file.readline()
                 return author[10:-1]
@@ -115,7 +117,7 @@ class Kor:
         the description of the file
 
         """
-        with open(self.file_path, "r") as file:
+        with open(self.file_path, "r", encoding='utf-8') as file:
             try:
                 desc = file.readline()
                 desc = file.readline()
@@ -134,7 +136,7 @@ class Kor:
 
 
     # Encoding ------------------------------------------------------------
-    def encode(self, line_type, line, name, value, value_type, custom_encoding=None, custom_line_type=None, custom_value_type=None):
+    def encode(self, line_type, line, name, value, value_type, custom_encoding=None, custom_line_type=None, custom_value_type=None, override=False):
         """
         use to encode data to your file
 
@@ -153,11 +155,14 @@ class Kor:
             return self.write(self.encode_comment(line=line, value=value))
 
         elif line_type == "var":
-            if not self.search(line_type='var', name=name)[0]:
-                if not value_type in ["num", "str"]:
+            if not override:
+                if self.search(line_type='var', name=name)[0]:
                     return None
-                else:
-                    return self.write(content=self.encode_var(line=line, name=name, value=value, value_type=value_type))
+
+            if not value_type in ["num", "str"]:
+                return None
+            else:
+                return self.write(content=self.encode_var(line=line, name=name, value=value, value_type=value_type))
 
         elif line_type == "list":
             if not self.search(line_type='list', name=name)[0]:
@@ -270,8 +275,9 @@ class Kor:
             elif line.startswith("#"):
                 file_output.append(line[1:])
 
-            elif line.startswith(custom_line_type):
-                file_output.append(self.decode_custom(line=line, custom_line_type=custom_line_type, custom_decoding=custom_decoding, custom_separator=custom_separator))
+            elif custom_line_type:
+                if line.startswith(custom_line_type):
+                    file_output.append(self.decode_custom(line=line, custom_line_type=custom_line_type, custom_decoding=custom_decoding, custom_separator=custom_separator))
 
 
         return file_output
@@ -336,7 +342,7 @@ class Kor:
         delete a specific line ine the file
 
         """
-        with open(self.file_path, "r") as file:
+        with open(self.file_path, "r", encoding='utf-8') as file:
             file_content = file.readlines()
 
         del file_content[line]
@@ -351,7 +357,7 @@ class Kor:
         search if a var or list with the same name already exist, return a list with True, the var/list name and var/list line
 
         """
-        with open(self.file_path, "r") as file:
+        with open(self.file_path, "r", encoding='utf-8') as file:
             line_list = file.readlines()
 
         list_list = []

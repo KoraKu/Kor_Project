@@ -3,6 +3,11 @@
 # Kor Project
 This repository contains the files of the Kor project with all the doc that you need
 
+# Changelogs
+- Now files will be opened with the UTF-8 encoding
+- Added an `override` parameters in `encode()`
+- Fixed a issue with `decode()` if not custom line type is specified
+
 ## The Kor Project Goals
 The kor project is desinged to store easlily data in file (.kor file) such as numbers, list, and many more ! You can define your own encoding method to encode your own object or varaible type.
 
@@ -55,7 +60,7 @@ my_file.encode(line_type='var', line=3, name="My_var", value="Hello, I'm a var c
 - `get_desc()` returns the description of the file
 
 ### Encoding and decoding
-- `encode(line_type, line, name, value, value_type, custom_encoding=None, custom_line_type=None, custom_value_type=None)` see the "**Encode parameters description**" section for further information
+- `encode(line_type, line, name, value, value_type, custom_encoding=None, custom_line_type=None, custom_value_type=None, override=False)` see the "**Encode parameters description**" section for further information
 
 - `decode(custom_line_type=None, custom_decoding=None)` see the "**Decode parameters description**" for further information
 
@@ -84,6 +89,9 @@ There are 2 value type by default :
 
 ### Custom_encoding/custom_line_type/custom_value_type
 Used for custom encoding, see "**How to : Custom encoding**" section for further information
+
+### Override 
+Used to write on a existing line, set to `True` to allow overwriting on lines
 
 ## Decode parameters description
 The only parameters that `decode()` takes are `custom_line_type`, `custom_decoding` & `custom_separator` which are both used for custom decoding, see "**How to : custom decoding**" section for further information.
