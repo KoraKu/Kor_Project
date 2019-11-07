@@ -8,7 +8,7 @@ setup(
     version='0.2.0',
     description="Use this package to work with kor files",
     py_modules=["kor"],
-    package_dir={'': 'src'},
+    package_dir={'': 'kor'},
     classifiers= [
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",

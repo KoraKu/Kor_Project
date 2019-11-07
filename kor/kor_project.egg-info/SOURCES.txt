@@ -1,0 +1,6 @@
+README.md
+setup.py
+kor/kor_project.egg-info/PKG-INFO
+kor/kor_project.egg-info/SOURCES.txt
+kor/kor_project.egg-info/dependency_links.txt
+kor/kor_project.egg-info/top_level.txt
