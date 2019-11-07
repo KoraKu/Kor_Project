@@ -1,196 +1,318 @@
-﻿
+# The Kor Project
+An easy-to-use module to store data in files
 
-# Kor Project
-This repository contains the files of the Kor project with all the doc that you need
+## Presentation 
+#### Project goals 
 
-# Changelogs
-- Now files will be opened with the UTF-8 encoding
-- Added an `override` parameters in `encode()`
-- Fixed a issue with `decode()` if not custom line type is specified
+- Being able to store small amount data in a new way
+- Being easy to use
+- Being intuitive
+- Being expendable
 
-## The Kor Project Goals
-The kor project is desinged to store easlily data in file (.kor file) such as numbers, list, and many more ! You can define your own encoding method to encode your own object or varaible type.
+#### Why use kor ?
 
-## Why use kor files ?
-- Kor files allows you to easily store data 
-- Can easily be customized to suit your needs 
-- Is very simple to use
+- The kor module allows for easy file manipulation with great expandability
+- You can create you own encoding method and share them to whoever you want
+- Easy to understand line-by-line concept
 
-## Example
+#### Line-by-line ? Tell me more !
 
-1) First of all you'll need to import kor
-```python
-import kor
+When working with kor (and .kor files) your data will be stored as a line, for instance, if I would like to encode `"My_String"` the result in the file will be `var : name -> str -> My_String` following this pattern : `line_type : line_name -> value_type -> value` 
+
+ > Remember that the first line starts at 0 and not one ! The first two lines (0 & 1) are usually used to store information such as the author and the description of the file !
+
+## Installation
+
+With pip :
+
+    pip install kor-project
+    
+Run this command in your CMD 
+
+If you don't have `pip` installed check out this website by MakeUsOf
+
+https://www.makeuseof.com/tag/install-pip-for-python/
+
+## Quick exemple
+
+Your project directory should look like this template
 ```
-
-
-2) The you'll need to create your file object before working with it 
-```python
-my_file = kor.Kor(file_path="test_file.kor")
+project_dir
+    |
+    |_ <your_file>.py
+    |_ <your_file>.kor
 ```
+> If you decide to put the .kor file in another directory/subdir you will have to give the full path
 
-
-3) Now you can use one one the module's method to do something with it, for instance we can add an author and a description
-
-```python
-my_file.add_author(author="Koraku")  
-my_file.add_desc(desc="This is a example file")
-```
-
-The content of the file :
-```
-*Author : Koraku  
-*Desc : This is a example file
-```
-
-4) Add more content !
-
-```python
-my_file.encode(line_type='var', line=3, name="My_var", value="Hello, I'm a var content !", value_type="str")
-```
-
-
-# Kor project documentation
-
-## List of all the method you'll need 
-### File options
-- `add_author(author)` is used to add an author to your file
-- `add_desc(desc)` is used to add a description to your file
-- `get_author()` returns the author of the file
-- `get_desc()` returns the description of the file
-
-### Encoding and decoding
-- `encode(line_type, line, name, value, value_type, custom_encoding=None, custom_line_type=None, custom_value_type=None, override=False)` see the "**Encode parameters description**" section for further information
-
-- `decode(custom_line_type=None, custom_decoding=None)` see the "**Decode parameters description**" for further information
-
-### Others
-- `reset()` erase all the data in your file, **irreversible**
-- `search(line_type, name)`  search in the file if a line has a certain name and returns `[True, line_name, line_number]` if found and `[False, None, None]` if not found
-
-
-## Encode parameters description
-### Line types
-There are three line type by default : 
-1) `var` is used to store `str` (string) or numbers
-2) `list` is used to store `list` or `tuple`
-3) `custom` is used to use your custom encoding method, see bellow for further information
-
-### Line
-The first two lines of the files are dedicated to the file author and description, keep in mind that the **first line starts at 0** not 1
-
-### Value
-The value is what your line will contain, the type of the content must be specified with `value_type`
-
-### Value type
-There are 2 value type by default :
-1) `str` for string
-2) `num`for numbers (int, float...)
-
-### Custom_encoding/custom_line_type/custom_value_type
-Used for custom encoding, see "**How to : Custom encoding**" section for further information
-
-### Override 
-Used to write on a existing line, set to `True` to allow overwriting on lines
-
-## Decode parameters description
-The only parameters that `decode()` takes are `custom_line_type`, `custom_decoding` & `custom_separator` which are both used for custom decoding, see "**How to : custom decoding**" section for further information.
-
-## Custom parameters
-The Kor Project allows you to create your own encoding methods, in those two examples you will learn how to do so
-Also, see "**example.py**" in the github page
-
-### How to : custom encoding
-
-1) Firstly, import kor and create your file object
+#### Opening your file
 ```python
 import kor
 
-my_file = kor.Kor(file_path="test_file.kor")
-```
-
-2) Secondly, create your object
-```python
-class My_Object:  
-    def __init__(self, name, language):  
-        self.name=name
-        self.language=language
-
-my_test_object = My_Object(name="Obj", language="Python")
-```
-
-3) Then you'll need to create one fuction for encoding, for instance :
-```python
-def custom_encoding(line_type, name, value, value_type): 
-	return f"{line_type} : {name} -> {value_type} -> {value.name},{value.language}\n"
-```
-Value is your instance of `My_Object`, name is the name of your line, line_type will be your custom line type and value type your custom value_type
-
-4) I highly recommend you to define thos variables to prevent spelling mistakes
-```python
-custom_line_type = "Custom_Line"
-custom_value_type = "Custom_Value"
+my_file = kor.Kor(file_path="./<your_file>.kor")
 ``` 
-5) Now you can encode your object !
-Use the `encode()` method as showed 
+
+#### Writing comments
+
 ```python
-my_file.encode(line_type="custom",  
-	line=3, 
-	name="My_Object_Name",  
-	value=my_test_object, 
-	value_type=None,  
-	custom_encoding=custom_encoding,  
-	custom_line_type=custom_line_type,  
-	custom_value_type=custom_value_type)
-```
-You must set `line_type` to `custom` to use your custom encoding
-`value` is your instance of you object (step 2)
-`custom_encoding` should be set to your custom encoding fuction (step 3)
-`custom_line_type` & `custom_value_type` are used for you custom line and value type (step 4)
+import kor
 
-The result of the above code :
-```kor
-*Author : Koraku  
-*Desc : This is a example file  
+my_file = kor.Kor(file_path="./<your_file>.kor")
 
-Custom_Line : My_Object_Name -> Custom_Value -> Obj,Python
+my_file.encode_comment(line=4, value="This is a comment")
 ```
 
-### How to : custom decoding
+#### First line type : `var`
 
-Repeat steps 1 & 2
+The 'var' type is probably the one I (and maybe you) use the most, it is the short for `variable` and can store numbers, bool and string
 
-3. Create your custom decoding fuction
 ```python
-def custom_decoding(value_args):
-	return My_Object(name=value_args[0], language=value_args[1])
+import kor
+
+my_file = kor.Kor(file_path="./<your_file>.kor")
+
+# To make you first var you'll need to create a instance of the Var class
+my_var = kor.Var(name="Var_Name", value="Var_Value", value_type="str") #possible value type : 'num', 'str' & 'bool'
+
+#The add it to you file
+my_var.encode(line=5, file=my_file, override=False) # See the documentation for more info
+
 ```
 
-`value_args` will be passed in your function, it represent a list with the value of you objetc parameters (in this exemple), here it is `['Obj', 'Python']`
-
-4. Now decode your file with the `decode()` method
+#### Reading the file
 ```python
-my_file.decode(custom_line_type=custom_line_type,
-	custom_decoding=custom_decoding, 
-	custom_separator=",")
+import kor
+
+my_file = kor.Kor(file_path="./<your_file>.kor")
+
+*** Do some stuff with the file... ***
+
+#Decode every lines of your file
+my_file.decode()
 ```
 
-5. if you print the output of this method it will give
+##Documentation
+
+### Classes
+> *class* kor.Kor(file_path)
+
+Represent your file in the code
+
+**Parameter**
+
+- `file_path` : The path to you file
+
+------------------------------------------------------------
+> *class* kor.Var(name, value, value_type)
+
+Represent you Var-type lines in the code
+
+**Parameters**
+
+- `name` : The name of the line
+- `value` : The content of the line
+- `value_type` : Type of the value *(num, str or bool)*
+
+------------------------------------------------------------
+> *class* kor.List(name, value, value_type)
+
+Represent you List-type lines in the code
+
+**Parameters**
+
+- `name` : The name of the line
+- `value` : The content of the line
+- `value_type` : Type of the value *(num, str or bool)*
+
+------------------------------------------------------------
+> *class* kor.CustomLines(name, value, custom_encoding, custom_value_type, custom_separator, custom_line_type)
+
+Represent you custom line types
+
+**Parameters**
+
+- `name` : The name of the line
+- `value` : The content of the line
+- `custom_encoding` : Your custom encoding function for this custom line type
+- `custom_value_type` : Your custom value_type for this custom line type
+- `custom_separator` : Your custom separator for this custom line type *(e.g : `custom : name -> custom -> value<separator>value2`)*
+- `custom_line_type` : Your custom line type name for this custom line type
+
+### `kor.Kor()` methods
+
+> *kor.Kor.* add_author(author)
+
+Allows you to set an author for you file
+
+**Parameter**
+
+- `author` : The author of the file
+
+------------------------------------------------------------
+> *kor.Kor.* add_desc(desc)
+
+Allows you to add a description to your file
+
+**Parameter**
+
+- `desc` : The description of your file
+
+------------------------------------------------------------
+> *kor.Kor.* get_author()
+
+**Returns**
+
+- `author` ***str*** : The author of the file
+
+------------------------------------------------------------
+> *kor.Kor.* get_desc()
+
+**Returns**
+
+- `desc` ***str*** : The description of the file
+
+------------------------------------------------------------
+> *kor.Kor.* encode_comment(line, value)
+
+Allows you to add comments to your file
+
+**Parameters**
+
+- `line` : Line where your comment should be encoded
+- `value` : Content of your comment
+
+------------------------------------------------------------
+> *kor.Kor.* decode(custom_line_type:list=None, custom_decoding:list=None, custom_separator:list=None)
+
+Used to decode your entire file
+
+**Parameters**
+*Only use when using custom line type (`kor.CustomLines`)*
+
+- `custom_line_type:list` : A list of all your custom line type
+- `custom_decoding:list` : A list of all your custom decoding functions
+- `custom_separator:list` : A list of all your custom separators
+
+------------------------------------------------------------
+> *kor.Kor.* write(content:list)
+
+Allows you to write content directly to the file (it does not process lines to encode them properly !)
+
+**Parameter**
+
+- `content:list` : A list of all the lines to write to the file
+
+------------------------------------------------------------
+> *kor.Kor.* read()
+
+**Returns**
+
+- The no-decoded lines, mainly used to see what inside the file without decoding
+
+------------------------------------------------------------
+> *kor.Kor.* delete(line, replace_blank = True)
+
+Delete a line of the file
+
+**Parameters**
+
+- `line` : The line to delete
+- `replace_blank:bool` : `True` = replace with a blank line (`\n`), `False` = Does not replace
+
+------------------------------------------------------------
+> *kor.Kor.* reset()
+
+Resets you file *(erase all data stored in it including information such as author and description)*
+
+### `kor.Var()` & `kor.List()` methods
+
+> *kor.Var.* & *kor.List.* encode(line, file, override=False)
+
+Used to encode your line to a specific file
+
+**Parameters**
+
+- `line` : The line in the file where it should be encoded
+- `file` : The file where you line should be encoded
+- `override:bool=True` : `True` = If there is already a line existing at this line number, it deletes it and replace with the new one, `False` = It does not
+
+### `kor.CustomLines()` method
+
+> *kor.CustomLines.* encode(line, file, override=False)
+
+Used to encode your custom line type
+ 
+**Parameters**
+
+- `line` : The line in the file where it should be encoded
+- `file` : The file where you line should be encoded
+- `override:bool=True` : `True` = If there is already a line existing at this line number, it deletes it and replace with the new one, `False` = It does not`
+
+## More Exemples
+
+### Custom encoding and decoding *(in a few easy steps !)*
+
+#### Step 1
+*Assuming you have already imported kor and created your instance of the Kor class...*
+
+Create variables to store your custom assets
+
 ```python
-[('My_Object_Name', <__main__.My_Object object at 0x00000270B6579E48>)`]
+c_line_type = []
+c_value_type = []
+c_separators = []
+c_decoding = []
 ```
-We can print the name and the value of our object :
+
+#### Step 2 
+
+Create function to encode and decode your object... 
+
+*We're encoding `obj` in this example but this apply to every object)*
+
 ```python
-my_new_obj = my_file.decode(custom_line_type=custom_line_type,
-	custom_decoding=custom_decoding, 
-	custom_separator=",")[0][1]
+class obj:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
-print(my_new_obj.name, my_new_obj.language)
+    def __repr__(self):
+        return f"obj(name='{self.name}', age='{self.age}')"
+
+# Custom encoding an decoding fuctions
+def custom_encode(line_type, name, value, value_type, separator):#Those parameters will be passed when you will encode your custom line type
+    
+    return f"{line_type} : {name} -> {value_type} -> {value.name}{separator}{value.age}"
+
+def custom_decode(args):#This argument will be passed when you will decode your custom line type
+    
+    return obj(name=args[0], age=args[1])
+```
+... and add `custom_decode()` in `c_decoding`. Don't forget the other variables too
+
+```python
+c_line_type.append("My_Custom_Line_Type")
+c_value_type.append("My_Custom_Value_Type")
+c_separators.append(";")
+c_decoding.append(custom_decode)
 ```
 
-output : 
-```
-Obj Python
+#### Step 3
+You're done ! 
+
+Now try to encode and decode with your custom line types !
+
+```python
+my_custom_line = kor.CustomLines(name="My_line",
+                                value=obj(name="KoraKu", age="16"),
+                                custom_encoding=custom_encode,
+                                custom_line_type=c_line_type[0],
+                                custom_separator=c_separators[0],
+                                custom_value_type=c_value_type[0])
+
+my_custom_line.encode(line=10, file=my_file, override=True)
+
+my_file.decode(custom_line_type=c_line_type, custom_decoding=c_decoding, custom_separator=c_separators)
 ```
 
-Now you know how to encode and decode your own object ! 🙌🎉
+## Links
+- PyPi page : https://pypi.org/project/kor-project/
